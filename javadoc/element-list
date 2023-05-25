@@ -1,0 +1,10 @@
+BusinessLogic
+BusinessLogic.Validators
+BusinessLogic.Validators.ClientValidaor
+BusinessLogic.Validators.OrderValidator
+BusinessLogic.Validators.ProductValidator
+Connection
+DataAccess
+Model
+Presentation
+Start
