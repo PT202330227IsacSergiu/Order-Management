@@ -1,9 +1,11 @@
 package Presentation;
 
 import BusinessLogic.ClientBLL;
+import DataAccess.ClientDAO;
 import Model.Client;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -20,8 +22,9 @@ public class ClientController {
      *
      * @param clientView the client view
      */
-    public ClientController(ClientView clientView){
+    public ClientController(ClientView clientView) {
         this.clientView = clientView;
+
         this.clientView.insertBtnListener(new insertListener());
         this.clientView.selectBtnListener(new selectListener());
         this.clientView.updateBtnListener(new updateListener());
@@ -32,7 +35,7 @@ public class ClientController {
     /**
      * The type Insert listener.
      */
-    class insertListener implements ActionListener{
+    class insertListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -46,15 +49,14 @@ public class ClientController {
             clientBLL.insertClient(client);
 
             List<Client> clients = clientBLL.findClients();
-            String[][] clientsList = convertDataToStrings(clients);
-            clientView.updateData(clientsList);
+            clientView.updateData(clientBLL.createClientsTable(clients));
         }
     }
 
     /**
      * The type Select listener.
      */
-    class selectListener implements ActionListener{
+    class selectListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -62,9 +64,8 @@ public class ClientController {
             ClientBLL clientBLL = new ClientBLL();
             try {
                 List<Client> clients = clientBLL.findClients();
-                String[][] clientsList = convertDataToStrings(clients);
-                clientView.updateData(clientsList);
-            }catch (Exception ex){
+                clientView.updateData(clientBLL.createClientsTable(clients));
+            } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         }
@@ -73,7 +74,7 @@ public class ClientController {
     /**
      * The type Update listener.
      */
-    class updateListener implements ActionListener{
+    class updateListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -88,15 +89,14 @@ public class ClientController {
             clientBLL.updateClient(client);
 
             List<Client> clients = clientBLL.findClients();
-            String[][] clientsList = convertDataToStrings(clients);
-            clientView.updateData(clientsList);
+            clientView.updateData(clientBLL.createClientsTable(clients));
         }
     }
 
     /**
      * The type Delete listener.
      */
-    class deleteListener implements ActionListener{
+    class deleteListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -110,8 +110,7 @@ public class ClientController {
             clientBLL.deleteClient(id);
 
             List<Client> clients = clientBLL.findClients();
-            String[][] clientsList = convertDataToStrings(clients);
-            clientView.updateData(clientsList);
+            clientView.updateData(clientBLL.createClientsTable(clients));
 
         }
     }
@@ -119,7 +118,7 @@ public class ClientController {
     /**
      * The type Back listener.
      */
-    class backListener implements ActionListener{
+    class backListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -128,22 +127,4 @@ public class ClientController {
         }
     }
 
-    /**
-     * Convert data to strings string [ ] [ ].
-     *
-     * @param clients the clients
-     * @return the string [ ] [ ]
-     */
-    public String[][] convertDataToStrings(List<Client> clients){
-        String[][] clientsList = new String[clients.size()][4];
-        int i = 0;
-        for (Client c: clients) {
-            clientsList[i][0] = Integer.toString(c.getId());
-            clientsList[i][1] = c.getName();
-            clientsList[i][2] = c.getAddress();
-            clientsList[i][3] = c.getPhone_number();
-            i++;
-        }
-        return clientsList;
-    }
 }

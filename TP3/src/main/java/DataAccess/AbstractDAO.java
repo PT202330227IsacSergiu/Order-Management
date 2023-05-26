@@ -2,11 +2,13 @@ package DataAccess;
 
 import Connection.ConnectionFactory;
 
+import javax.swing.table.DefaultTableModel;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Formattable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -162,7 +164,7 @@ public class AbstractDAO<T> {
             statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             int i = 1;
             for (Field field : t.getClass().getDeclaredFields()) {
-                if(field.getName().equals(type.getDeclaredFields()[0].getName()))
+                if (field.getName().equals(type.getDeclaredFields()[0].getName()))
                     continue;
                 Object value;
                 field.setAccessible(true);
@@ -211,7 +213,7 @@ public class AbstractDAO<T> {
         i = 0;
         for (Field field : type.getDeclaredFields()) {
             i++;
-            if(field.getName().equals(type.getDeclaredFields()[0].getName()))
+            if (field.getName().equals(type.getDeclaredFields()[0].getName()))
                 continue;
             sb.append(field.getName());
             if (i != type.getDeclaredFields().length) {
@@ -227,7 +229,7 @@ public class AbstractDAO<T> {
         i = 0;
         for (Field field : type.getDeclaredFields()) {
             i++;
-            if(field.getName().equals(type.getDeclaredFields()[0].getName()))
+            if (field.getName().equals(type.getDeclaredFields()[0].getName()))
                 continue;
             sb.append("?");
             if (i != type.getDeclaredFields().length) {
@@ -255,7 +257,7 @@ public class AbstractDAO<T> {
             statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             int i = 1;
             for (Field field : t.getClass().getDeclaredFields()) {
-                if(field.getName().equals(type.getDeclaredFields()[0].getName()))
+                if (field.getName().equals(type.getDeclaredFields()[0].getName()))
                     continue;
                 Object value;
                 field.setAccessible(true);
@@ -296,6 +298,38 @@ public class AbstractDAO<T> {
         return null;
     }
 
+    public DefaultTableModel createTable(List<T> list) {
+
+        T obj = list.get(0);
+        List<String> listColumns = new ArrayList<>();
+        for (Field field : obj.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            listColumns.add(field.getName());
+        }
+        String[] columns = listColumns.toArray(new String[0]);
+
+        String[][] data = new String[list.size()][columns.length];
+        int i = 0;
+        for (T object : list) {
+            List<String> rowData = new ArrayList<>();
+            for (Field field : object.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
+                Object value;
+                try {
+                    value = field.get(object);
+                    rowData.add(value.toString());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+            data[i] = rowData.toArray(new String[0]);
+            i++;
+        }
+
+        return new DefaultTableModel(data, columns);
+    }
+
     /**
      * Create update query string.
      *
@@ -308,10 +342,10 @@ public class AbstractDAO<T> {
         sb.append(" SET ");
         int i = 1;
         for (Field field : type.getDeclaredFields()) {
-            if(field.getName().equals(type.getDeclaredFields()[0].getName()))
+            if (field.getName().equals(type.getDeclaredFields()[0].getName()))
                 continue;
             sb.append(field.getName()).append(" = ?");
-            if (i+1 != type.getDeclaredFields().length) {
+            if (i + 1 != type.getDeclaredFields().length) {
                 sb.append(", ");
             }
             i++;
@@ -362,7 +396,7 @@ public class AbstractDAO<T> {
      *
      * @return the string
      */
-    public String createLastRowQuery(){
+    public String createLastRowQuery() {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ");
         sb.append("warehousedb.").append(type.getSimpleName().toLowerCase());
@@ -376,7 +410,7 @@ public class AbstractDAO<T> {
      *
      * @return the t
      */
-    public T lastElement(){
+    public T lastElement() {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;

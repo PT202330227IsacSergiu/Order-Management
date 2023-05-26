@@ -2,6 +2,7 @@ package Presentation;
 
 import BusinessLogic.ProductBLL;
 import Model.Product;
+import Model.Product;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -46,8 +47,7 @@ public class ProductController {
             productBLL.insertProduct(product);
 
             List<Product> products = productBLL.findProducts();
-            String[][] productsList = convertDataToStrings(products);
-            productView.updateData(productsList);
+                productView.updateData(productBLL.createProductsTable(products));
         }
     }
 
@@ -62,8 +62,7 @@ public class ProductController {
             ProductBLL productBLL = new ProductBLL();
             try {
                 List<Product> products = productBLL.findProducts();
-                String[][] productsList = convertDataToStrings(products);
-                productView.updateData(productsList);
+                productView.updateData(productBLL.createProductsTable(products));
             }catch (Exception ex){
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
@@ -90,8 +89,7 @@ public class ProductController {
             productBLL.updateProduct(product);
 
             List<Product> products = productBLL.findProducts();
-            String[][] productsList = convertDataToStrings(products);
-            productView.updateData(productsList);
+            productView.updateData(productBLL.createProductsTable(products));
         }
     }
 
@@ -112,8 +110,7 @@ public class ProductController {
             productBLL.deleteProduct(id);
 
             List<Product> products = productBLL.findProducts();
-            String[][] productsList = convertDataToStrings(products);
-            productView.updateData(productsList);
+                productView.updateData(productBLL.createProductsTable(products));
 
         }
     }

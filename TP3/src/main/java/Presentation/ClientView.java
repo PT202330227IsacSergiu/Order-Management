@@ -25,8 +25,7 @@ public class ClientView extends JFrame {
     private JTable dbTable;
     private DefaultTableModel tableModel;
 
-    private String[] collumsName = {"ID", "NAME", "ADDRESS", "PHONE NO."};
-    private String[][] data = {};
+
 
     /**
      * Instantiates a new Client view.
@@ -80,7 +79,6 @@ public class ClientView extends JFrame {
         panelBtns.add(deleteBtn);
         panelBtns.add(selectBtn);
 
-        tableModel = new DefaultTableModel(data, collumsName);
         dbTable = new JTable(tableModel);
         JPanel panelTableDB = new JPanel();
         panelTableDB.add(new JScrollPane(dbTable));
@@ -304,17 +302,9 @@ public class ClientView extends JFrame {
      *
      * @return the string [ ] [ ]
      */
-    public String[][] getData() {
-        return data;
-    }
 
-    /**
-     * Update data.
-     *
-     * @param newData the new data
-     */
-    public void updateData(String[][] newData) {
-        tableModel.setDataVector(newData, collumsName);
+    public void updateData(DefaultTableModel tableModel) {
+        this.dbTable.setModel(tableModel);
     }
 
     /**

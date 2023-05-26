@@ -1,14 +1,15 @@
 package BusinessLogic;
 
-import BusinessLogic.Validators.ProductValidator.IDValidator;
 import BusinessLogic.Validators.ProductValidator.PriceValidator;
 import BusinessLogic.Validators.ProductValidator.QuantityValidator;
 import BusinessLogic.Validators.Validator;
-import DataAccess.ClientDAO;
+
 import DataAccess.ProductDAO;
+import Model.Client;
 import Model.Product;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -107,5 +108,9 @@ public class ProductBLL {
         }catch (Exception ex){
             JOptionPane.showMessageDialog(null, "Product with id " + id + " doesn't exist!");
         }
+    }
+
+    public DefaultTableModel createProductsTable(List<Product> products){
+        return productDAO.createTable(products);
     }
 }

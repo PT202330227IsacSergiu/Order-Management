@@ -1,13 +1,12 @@
 package BusinessLogic;
 
-import BusinessLogic.Validators.ClientValidaor.IDValidator;
 import BusinessLogic.Validators.ClientValidaor.PhoneNumberValidator;
 import BusinessLogic.Validators.Validator;
 import DataAccess.ClientDAO;
 import Model.Client;
-import com.mysql.cj.jdbc.exceptions.NotUpdatable;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -105,5 +104,9 @@ public class ClientBLL {
         }catch (Exception ex){
             JOptionPane.showMessageDialog(null, "Client with id " + id + " doesn't exist!");
         }
+    }
+
+    public DefaultTableModel createClientsTable(List<Client> clients){
+        return clientDAO.createTable(clients);
     }
 }

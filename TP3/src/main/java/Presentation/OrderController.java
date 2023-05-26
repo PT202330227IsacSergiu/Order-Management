@@ -80,8 +80,7 @@ public class OrderController {
                 }
 
                 List<Order> orders = orderBLL.findOrders();
-                String[][] ordersList = convertDataToStrings(orders);
-                orderView.updateData(ordersList);
+                orderView.updateData(orderBLL.createOrdersTable(orders));
             }
         }
     }
@@ -97,8 +96,7 @@ public class OrderController {
             OrderBLL orderBLL = new OrderBLL();
             try{
                 List<Order> orders = orderBLL.findOrders();
-                String[][] ordersList = convertDataToStrings(orders);
-                orderView.updateData(ordersList);
+                orderView.updateData(orderBLL.createOrdersTable(orders));
             }catch (Exception ex){
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
@@ -115,25 +113,6 @@ public class OrderController {
             orderView.dispose();
             new GeneralController(new GeneralView());
         }
-    }
-
-    /**
-     * Convert data to strings string [ ] [ ].
-     *
-     * @param orders the orders
-     * @return the string [ ] [ ]
-     */
-    public String[][] convertDataToStrings(List<Order> orders){
-        String[][] clientsList = new String[orders.size()][4];
-        int i = 0;
-        for (Order o: orders) {
-            clientsList[i][0] = Integer.toString(o.getId());
-            clientsList[i][1] = Integer.toString(o.getId_client());
-            clientsList[i][2] = Integer.toString(o.getId_product());
-            clientsList[i][3] = Integer.toString(o.getQuantity());
-            i++;
-        }
-        return clientsList;
     }
 
 }

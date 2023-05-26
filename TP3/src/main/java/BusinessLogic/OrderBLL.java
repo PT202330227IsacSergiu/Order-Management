@@ -1,6 +1,5 @@
 package BusinessLogic;
 
-import BusinessLogic.Validators.OrderValidator.IDValidator;
 import BusinessLogic.Validators.OrderValidator.QuantityValidator;
 import BusinessLogic.Validators.Validator;
 import DataAccess.OrderDAO;
@@ -8,6 +7,7 @@ import Model.Client;
 import Model.Order;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -76,5 +76,9 @@ public class OrderBLL {
             throw new NoSuchElementException("No order with this id!");
         }
         return order.getId();
+    }
+
+    public DefaultTableModel createOrdersTable(List<Order> orders){
+        return orderDAO.createTable(orders);
     }
 }
