@@ -1,5 +1,4 @@
 # Documentation
-## Table of Contents
 
 ### 1. Objective
 The main objective was to design a Java program for order management. Each order is placed by a client who can order products from a warehouse. Data about each entity is stored in a MySQL database (Client, Product, Order), alongside the creation of classes. Operations such as insert, delete, update, and report are performed on the database tables. The program features a graphical user interface for database modifications. Command details are displayed in a .pdf file.
